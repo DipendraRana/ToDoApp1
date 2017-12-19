@@ -1,0 +1,59 @@
+<form>
+	<h3 align="center">Sign-In</h3>
+	<div class="col-sx-12 col-md-12 col-lg-12">
+		<div class="form-group">
+			<label class="control-label"></label> 
+			<input type="email" class="form-control" data-ng-model="user.emailId"
+				placeholder="Enter Email-ID" name="emailId" required>
+		</div>
+	</div>
+
+	<div class="col-sx-12 col-md-12 col-lg-12">
+		<div class="form-group">
+			<label class="control-label"></label> 
+			<input type="password" class="form-control" data-ng-model="user.password"
+				placeholder="Enter Password" name="password" required>
+		</div>
+	</div>
+	
+	<div class="col-sx-12 col-md-12 col-lg-12">
+		<div class="form-group">
+			<span style="color: red;" id="loginfailedmessage"></span>
+		</div>
+	</div>
+
+	<div class="col-sx-12 col-md-12 col-lg-12">
+		<div class="form-group">
+			<button id="buttons" type="submit" data-ng-click="loginUser()">Sign-In</button>
+		</div>
+	</div>
+	
+	<div class="col-sx-12 col-md-12 col-lg-12">
+		<div class="form-group">
+			<div>
+				<a href="#!/enterEmail">Forgot Password</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-sx-12 col-md-12 col-lg-12">
+		<div class="form-group">
+			<div>
+				Don't have Account yet?<a href="#!/registration">Sign-Up</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xs-25" align="center">
+		<a class="fa fa-facebook" href="facebookLogin"> Sign in with
+			facebook </a>
+	</div>
+
+	<br>
+	<div class="row">
+		<div class="col-xs-25" align="center">
+			<a class="fa fa-google" href="googleLogin"> Sign in with Google </a>
+		</div>
+	</div>
+	<br>
+</form>

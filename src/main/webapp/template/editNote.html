@@ -1,0 +1,154 @@
+<div class="modal-content" style="background-color: {{note.color}}" data-ng-init="getURLMetaData(note);">
+	<div class="modal-body">
+		<div class="img-wrapper">
+			<img class="pull-right" data-ng-show="note.pinned==true"
+			src="images/pinned.svg" data-ng-click="note.pinned = false;updateNote(note);" width="22"
+			height="22"> 
+			<img class="pull-right" data-ng-show="note.pinned==false" src="images/unpinned.svg"
+			data-ng-click="note.pinned = true;updateNote(note);" width="22" height="22">
+		    <img data-ng-if="note.image" class="img-responsive images" data-ng-src="{{note.image}}" data-ng-click="showFullImageViewer(note)">
+		    <div class="img-overlay">
+		      <button data-ng-if="note.image" class="btn btn-md" data-ng-click="note.image=null;updateNote(note);">
+		      	<i class="glyphicon glyphicon-trash"></i></button>
+		    </div>
+		</div>
+		<div contenteditable="true" data-ng-model="note.noteTitle" data-ng-change="updateNote(note);" style="padding-bottom: 10px; outline: none;"></div>
+		<div contenteditable="true" data-ng-model="note.noteDescription" data-ng-change="updateNote(note)" style="padding-bottom: 10px; outline: none;"></div>
+		
+		<div data-ng-init="getURLMetaData(note);">
+			<div data-ng-repeat="urlData in note.link">
+				<div data-ng-if="urlData.title"  >
+					<a data-ng-href="{{urlData.url}}" target="_blank">
+						<div class="row" style="background-color:#FAF8F8; margin-right:0px;  margin-left:0px; border:1px solid grey">
+							<div class="col-sm-4 col-md-4 col-xs-4" style="padding: 0px">
+								<img data-ng-src="{{urlData.imageUrl}}" height="70" width="80">
+							</div>
+							<div class="col-sm-8 col-md-8 col-xs-8"  >
+								<div data-ng-bind="urlData.title" style="font-size: 14px; color:black;"></div>
+								<div data-ng-bind="urlData.host" style="font-size: 10px; color:grey;"></div>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+		
+		<div class="note-extras" style="overflow: auto;">
+			<button type="button" class="btn btn-xs"
+				data-ng-repeat="label in note.labels" style="display: inline-block;">
+				{{label.labelName}}<span class="badge" style="color: white;"><span
+					class="glyphicon glyphicon-remove"
+					data-ng-click="removeLabelFromNotes(note,label,$index)"></span></span>
+			</button>
+			<button type="button" class="btn btn-xs"
+				data-ng-show="note.reminderDate&&note.reminderTime">
+				{{note.reminderDate | date : 'MMM dd'}},{{note.reminderTime}}
+				<span class="badge" style="color: white;">
+				<span class="glyphicon glyphicon-remove"
+					data-ng-click="deleteReminderOfNote(note)"></span></span>
+			</button>
+			<span data-ng-repeat="user in note.collaborators">
+				<img data-ng-show="user.picture==null" src="images/photo.jpg"
+					class="img-circle" height="30" width="30" />
+				<img data-ng-show="user.picture!=null" data-ng-src="{{user.picture}}"
+				class="img-circle" height="30" width="30" />
+			</span>
+			<div class="date pull-right" style="display: inline-block;">Edited {{ note.editedDate | date : 'MMM dd'}}</div>
+		</div>
+
+		<div class="note-icons">
+			<div class="dropdown inline">
+				<img src="images/reminder.png" width="19px" height="19px"
+					data-toggle="dropdown">
+				<ul class="dropdown-menu">
+					<li><div style="padding-left: 2px;">Reminder:</div> <br></li>
+					<li><div>
+							<input type="date" data-ng-model="note.reminderDate">
+						</div> 
+						<br>
+					</li>
+					<li><div class="input-group" data-toggle="collapse"
+							data-target="#inputreminder{{note.noteId}}">
+							Click To Add Time<span class="caret"></span>
+						</div>
+						<div id="inputreminder{{note.noteId}}" class="collapse">
+							<div data-ng-model="note.reminderTime"
+								data-ng-click="addReminderToNote(note,'8:00 AM')">Morning
+								8:00 AM</div>
+							<div data-ng-model="note.reminderTime"
+								data-ng-click="addReminderToNote(note,'1:00 PM')">AfterNoon
+								1:00 PM</div>
+							<div data-ng-model="note.reminderTime"
+								data-ng-click="addReminderToNote(note,'6:00 PM')">Evening
+								6:00 PM</div>
+							<div data-ng-model="note.reminderTime"
+								data-ng-click="addReminderToNote(note,'8:00 PM')">Night
+								8:00 PM</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="dropdown inline">
+				<img src="images/colors.svg" width="30px" height="19px"
+					data-toggle="dropdown">
+				<ul class="dropdown-menu">
+					<li><span data-ng-repeat="color in colors" role="menuitem"><img
+							data-ng-src="{{color.path}}" title="{{color.tooltip}}"
+							height="25px" data-ng-click="note.color = color.color;$scope.color = color;updateNote(note);">
+					</span></li>
+				</ul>
+			</div>
+			<img src="images/archive.png" data-ng-show="note.archived==false"
+				data-ng-click="note.archived = true;note.pinned = false;updateNote(note);"> 
+			<img src="images/archive.svg" data-ng-show="note.archived==true"
+				data-ng-click="note.archived = false;note.pinned = false;updateNote(note);">
+			
+			<img data-ng-src="images/image.svg"
+							data-ng-click="triggerImageUploadUI(note,'note')"> 
+			<input type="file" id="imageUploadUI" data-ng-show="false" data-ng-model="file"
+				onchange="angular.element(this).scope().imageUpload(this)">
+				
+			<img src="images/collaborator.svg" data-ng-click="showModalCollaborator(note)">
+				
+			<div class="dropdown inline ">
+				<img src='images/more.svg' width="17px" height="17px"
+					data-toggle="dropdown">
+				<ul class="dropdown-menu">
+					<li><a data-ng-click="deleteNote(note)" data-dismiss="modal"
+						data-ng-show="note.trashed==false">Delete Note</a></li>
+					<li><a data-ng-click="note.archived = false;note.pinned = false;createNote(note);"
+						data-dismiss="modal" data-ng-show="note.trashed==false">Make a
+							copy</a></li>
+					<li><a data-ng-click="facebookShare(note)" data-ng-show="note.trashed==false">Share To
+										Facebook</a></li>
+					<li><a data-ng-click="deleteNotePermanently(note);ok();"
+						data-ng-show="note.trashed==true" data-dismiss="modal">Delete
+							Forever</a></li>
+					<li><a data-ng-click="note.trashed = false;updateNote(note);"
+						data-ng-show="note.trashed==true" data-dismiss="modal">Restore</a></li>
+					<li><a data-toggle="collapse"
+						data-target="#input{{note.noteId}}"
+						data-ng-show="note.trashed==false">Create a label<span
+							class="caret"></span>
+					</a>
+						<div id="input{{note.noteId}}" class="collapse">
+							<div class="input-group" data-ng-repeat="label in labels">
+								<div class="conatiner">
+									<div class="checkbox" style="padding-left: 25px;">
+										<label><input type="checkbox" data-ng-model="active"
+											data-ng-checked="checked(note,label)"
+											data-ng-click="change(active,label,note,$index)">{{label.labelName}}</label>
+									</div>
+								</div>
+							</div>
+						</div></li>
+				</ul>
+			</div>
+
+			<div role="button" data-ng-click="updateNote(note);ok();"
+				class="btn btn-done pull-right inline" data-dismiss="modal"
+				data-ng-show="note.trashed==false">DONE</div>
+
+		</div>
+	</div>
+</div>

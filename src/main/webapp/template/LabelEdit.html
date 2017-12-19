@@ -1,0 +1,24 @@
+<div class="modal-content">
+	<div class="modal-body">
+		<div class="input-group">
+			<span class="input-group-addon"><i
+				class="glyphicon glyphicon-remove" onclick="cleanFeild()"></i></span> <input
+				type="text" class="form-control" placeholder="Create New Label"
+				data-ng-model="label.labelName" id="cleanField"><span
+				class="input-group-addon"><i class="glyphicon glyphicon-ok"
+				data-ng-click="addLabel(label)"></i></span>
+		</div>
+		<div id="labelmessage" style="color: red;"></div>
+		<br>
+		<div data-ng-repeat="label in labels">
+			<div class="input-group">
+				<span class="input-group-addon"><i
+					class="glyphicon glyphicon-trash"
+					data-ng-click="removeLabel(label)"></i></span>
+					<input class="form-control" data-ng-bind="label.labelName" data-ng-model="label.labelName">
+				<span class="input-group-addon"><i
+					class="glyphicon glyphicon-ok" data-ng-click="updateLabel(label)"></i></span>
+			</div>
+		</div>
+	</div>
+</div>

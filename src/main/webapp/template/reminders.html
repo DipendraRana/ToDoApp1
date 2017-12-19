@@ -1,0 +1,38 @@
+<top-nav-bar></top-nav-bar>
+<second-top-bar></second-top-bar>
+<side-nav-bar></side-nav-bar>
+<div id="noteContainer" class="container-fluid">
+	<div id="note-container"
+		class=" col-sm-12 col-md-12 col-xs-12 col-lg-12">
+		<div class="col-lg-1 col-md-1"></div>
+		<div class="col-md-10 col-sm-12 col-xs-12 col-lg-10">
+			<div
+				data-ng-repeat="note in notes | filter : {reminder: true} as otherNotes"
+				id="note-scope" class="{{changeView}}">
+				<div class="card" style="background-color: {{note.color}}" data-ng-init="getTheCollborators(note)">
+					<div class="card-block" data-ng-click="showModal(note)">
+						<div class="img-wrapper">
+							<img class="pull-right notPinned" src="images/unpinned.svg"
+							data-ng-click="$event.stopPropagation();note.pinned = true;updateNote(note);" width="22" height="22"
+							id="notPinned" data-ng-show="note.pinned==false"> 
+							<img class="pull-right Pinned" src="images/pinned.svg"
+							data-ng-click="$event.stopPropagation();note.pinned = false;updateNote(note);" width="22" height="22"
+							data-ng-show="note.pinned==true">
+						    <img class="img-responsive images" data-ng-src="{{note.image}}">
+						    <div class="img-overlay">
+						      <button data-ng-if="note.image" class="btn btn-md" data-ng-click="$event.stopPropagation();note.image=null;updateNote(note);">
+						      	<i class="glyphicon glyphicon-trash"></i></button>
+						    </div>
+						</div>
+						<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
+						<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
+					</div>
+					<note-extras></note-extras>
+					<note-icons></note-icons>
+					<url-meta-data></url-meta-data>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-1 col-md-1"></div>
+</div>

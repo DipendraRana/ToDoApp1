@@ -1,0 +1,128 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
+       http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-4.1.xsd 
+       http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd ">
+
+	<!-- Activate Spring MVC Annotation scanning -->
+	<!-- Specifying base package of the Components like Controller, Service,DAO -->
+	<context:component-scan base-package="com.bridgelabz"></context:component-scan>
+
+	<!-- Getting Database properties -->
+	<context:property-placeholder location="classpath:application.properties" />
+
+	<!-- Configures the @Controller programming model -->
+	<mvc:annotation-driven />
+	<mvc:resources location="/template/" mapping="/template/**"></mvc:resources>
+	<mvc:resources location="/service/" mapping="/service/**"></mvc:resources>
+	<mvc:resources location="/script/" mapping="/script/**"></mvc:resources>
+	<mvc:resources location="/controller/" mapping="/controller/**"></mvc:resources>
+	<mvc:resources location="/directive/" mapping="/directive/**"></mvc:resources>
+	<mvc:resources location="/images/" mapping="/images/**"></mvc:resources>
+	<mvc:resources location="/css/" mapping="/css/**"></mvc:resources>
+	<mvc:resources location="/filters/" mapping="/filters/**"></mvc:resources>
+
+	<!-- enable the configuration of jms on annotations -->
+	<jms:annotation-driven container-factory="jmsListenerContainerFactory" />
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	<task:annotation-driven/>
+
+	<!-- DataSource is the database configuration and would be required by template 
+		and Dao classes -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${database.driver}"></property>
+		<property name="url" value="${database.url}"></property>
+		<property name="username" value="${database.user}"></property>
+		<property name="password" value="${database.password}"></property>
+	</bean>
+
+	<!-- Hibernate SessionFactory and Properties -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+			</props>
+		</property>
+		<property name="packagesToScan" value="com.bridgelabz.model"></property>
+	</bean>
+
+	<!-- Transaction -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<!-- Mail Setting -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<!-- SMTP settings -->
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="dipendrabridgelabz@gmail.com" />
+		<property name="password" value="123456789!@#" />
+		<property name="javaMailProperties">
+			<!-- additional properties specific to JavaMail -->
+			<props>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- Activemq connection factory -->
+	<bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<!-- brokerURL -->
+		<constructor-arg index="0" value="tcp://localhost:61616" />
+		<!-- one setting is done to env. file inside bin directory of activeMQ 
+			installation directory and another one is done here -->
+		<!-- it is important to set if you are sending message as object due to 
+			upgraded security in activeMQ -->
+		<property name="trustAllPackages" value="true" />
+	</bean>
+
+	<!-- Pooled Spring connection factory -->
+	<bean id="connectionFactory"
+		class="org.springframework.jms.connection.CachingConnectionFactory">
+		<constructor-arg ref="amqConnectionFactory" />
+	</bean>
+
+	<!-- Default Destination Queue Definition -->
+	<bean id="defaultDestination" class="org.apache.activemq.command.ActiveMQQueue">
+		<!-- name of the queue -->
+		<constructor-arg index="0" value="MessageStorage" />
+	</bean>
+
+	<!-- JmsTemplate Definition -->
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="defaultDestination" ref="defaultDestination" />
+	</bean>
+
+	<!-- JMS receive, define JmsListenerContainerFactory -->
+	<bean id="jmsListenerContainerFactory"
+		class="org.springframework.jms.config.DefaultJmsListenerContainerFactory">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="concurrency" value="1-1" />
+	</bean>
+
+	<bean id="bcryptEncoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+
+	<bean id="bcryptDecode" class="org.springframework.security.crypto.bcrypt.BCrypt"></bean>
+	
+</beans>

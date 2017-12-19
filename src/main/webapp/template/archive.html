@@ -1,0 +1,113 @@
+<top-nav-bar></top-nav-bar>
+<second-top-bar></second-top-bar>
+<side-nav-bar></side-nav-bar>
+<div id="noteContainer" class="container-fluid">
+	<div id="note-container"
+		class=" col-sm-12 col-md-12 col-xs-12 col-lg-12">
+
+		<div class="col-lg-1 col-md-1"></div>
+		<div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
+			<div data-ng-repeat="note in notes | filter : {archived : true}"
+				id="note-scope" class="{{changeView}}">
+				<div class="card" style="background-color: {{note.color}}" data-ng-init="getTheCollborators(note)">
+					<div class="card-block" data-ng-click="showModal(note)">
+						<div class="img-wrapper">
+							<not-pinned></not-pinned>
+						    <img class="img-responsive images" data-ng-src="{{note.image}}">
+						    <div class="img-overlay">
+						      <button data-ng-if="note.image" class="btn btn-md" data-ng-click="$event.stopPropagation();note.image=null;updateNote(note);">
+						      	<i class="glyphicon glyphicon-trash"></i></button>
+						    </div>
+						</div>
+						<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
+						<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
+					</div>
+					<note-extras></note-extras>
+					<div class="note-icons">
+						<div class="dropdown inline">
+							<img src="images/reminder.png" width="19px" height="19px"
+								data-toggle="dropdown">
+							<ul class="dropdown-menu">
+								<li><div style="padding-left: 2px;">Reminder:</div> <br></li>
+								<li><div>
+										<input type="date" data-ng-model="note.reminderDate">
+									</div> 
+									<br>
+								</li>
+								<li><div class="input-group" data-toggle="collapse"
+										data-target="#inputreminder{{note.noteId}}">
+										Click To Add Time<span class="caret"></span>
+									</div>
+									<div id="inputreminder{{note.noteId}}" class="collapse">
+										<div data-ng-model="note.reminderTime"
+											data-ng-click="addReminderToNote(note,'8:00 AM')">Morning
+											8:00 AM</div>
+										<div data-ng-model="note.reminderTime"
+											data-ng-click="addReminderToNote(note,'1:00 PM')">AfterNoon
+											1:00 PM</div>
+										<div data-ng-model="note.reminderTime"
+											data-ng-click="addReminderToNote(note,'6:00 PM')">Evening
+											6:00 PM</div>
+										<div data-ng-model="note.reminderTime"
+											data-ng-click="addReminderToNote(note,'8:00 PM')">Night
+											8:00 PM</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="dropdown inline">
+							<img src="images/colors.svg" width="30px" height="19px"
+								data-toggle="dropdown">
+							<ul class="dropdown-menu">
+								<li><span data-ng-repeat="color in colors" role="menuitem"><img
+										data-ng-src="{{color.path}}" title="{{color.tooltip}}"
+										height="25px" data-ng-click="note.color = color.color;$scope.color = color;updateNote(note);">
+								</span></li>
+							</ul>
+						</div>
+						
+						<img data-ng-src="images/archive.svg"
+							data-ng-click="note.archived = false;note.pinned = false;updateNote(note);">	 
+						<img data-ng-src="images/image.svg"
+							data-ng-click="triggerImageUploadUI(note,'note')"> 
+						<input type="file" id="imageUploadUI" data-ng-show="false" data-ng-model="file"
+							onchange="angular.element(this).scope().imageUpload(this)">
+							
+						<img src="images/collaborator.svg" data-ng-click="showModalCollaborator(note)">
+					
+						<div class="dropdown inline pull-right">
+							<img src='images/more.svg' width="19px" height="19px"
+								data-toggle="dropdown">
+							<ul class="dropdown-menu">
+								<li><a data-ng-click="deleteNote(note)">Delete Note</a></li>
+								<li><a data-ng-click="note.archived = false;note.pinned = false;createNote(note);">Make a
+										copy</a></li>
+								<li><a data-ng-click="facebookShare(note)">Share To
+										Facebook</a></li>
+								<li><a data-toggle="collapse"
+									data-target="#inputmore{{note.noteId}}">Select a label<span
+										class="caret"></span>
+								</a>
+									<div id="inputmore{{note.noteId}}" class="collapse">
+										<div class="input-group" data-ng-repeat="label in labels">
+											<div class="conatiner">
+												<div class="checkbox" style="padding-left: 25px;">
+													<label><input type="checkbox"
+														data-ng-model="active"
+														data-ng-checked="checked(note,label)"
+														data-ng-click="change(active,label,note,$index)">{{label.labelName}}</label>
+												</div>
+											</div>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<url-meta-data></url-meta-data>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-1 col-md-1"></div>
+</div>

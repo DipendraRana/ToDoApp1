@@ -1,0 +1,51 @@
+<form>
+	<h3 align="center">Signup Form</h3>
+	<div class="col-sx-12 col-md-12 col-lg-12">
+		<div class="form-group">
+			<label class="control-label">User Name</label> 
+			<input type="text" class="form-control" data-ng-model="user.userName" name="username" required>
+		</div>
+	</div>
+
+	<div class="col-sx-12 col-md-12 col-lg-12">
+		<div class="form-group">
+			<label class="control-label">Email-ID</label> 
+			<input type="email" class="form-control" data-ng-model="user.emailId" name="emailid" required>
+		</div>
+	</div>
+
+	<div class="col-sx-12 col-md-12 col-lg-12">
+		<div class="form-group">
+			<label class="control-label">Password</label> 
+			<input type="password" class="form-control" data-ng-model="user.password" name="password" required>
+		</div>
+	</div>
+
+	<div class="col-sx-12 col-md-12 col-lg-12">
+		<div class="form-group">
+			<label class="control-label">Mobile Number</label> 
+			<input type="text" class="form-control" data-ng-model="user.mobileNumber" name="mobilenumber" required>
+		</div>
+	</div>
+	
+	<div class="col-sx-12 col-md-12 col-lg-12">
+		<div class="form-group">
+			<span style="color: red;" id="registrationfailedmessage"></span>
+		</div>
+	</div>
+
+	<div class="col-sx-12 col-md-12 col-lg-12">
+		<div class="form-group">
+			<button id="buttons" type="submit" data-ng-click="registerUser()">Sign-Up</button>
+		</div>
+	</div>
+
+	<div class="col-sx-25" align="center">
+		<div class="form-group">
+			<div>
+				Already have Account?<a href="#!/login">Sign-In</a>
+			</div>
+		</div>
+	</div>
+	<br>
+</form>

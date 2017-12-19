@@ -1,0 +1,21 @@
+<span class="note-extras" style="display: inline-block;"data-ng-show="note.labels">
+	<button type="button" class="btn btn-xs"
+		data-ng-repeat="label in note.labels">
+		{{label.labelName}}<span class="badge" style="color: white;"><span
+			class="glyphicon glyphicon-remove"
+			data-ng-click="removeLabelFromNotes(note,label,$index)"></span></span>
+	</button>
+	<button type="button" class="btn btn-xs"
+		data-ng-show="note.reminderDate&&note.reminderTime">
+		{{note.reminderDate | date : 'MMM dd'}},{{note.reminderTime}}<span
+			class="badge" style="color: white;"><span
+			class="glyphicon glyphicon-remove"
+			data-ng-click="deleteReminderOfNote(note)"></span></span>
+	</button>
+	<span data-ng-repeat="user in note.collaborators">
+		<img data-ng-show="user.picture==null" src="images/photo.jpg"
+			class="img-circle" height="30" width="30" />
+		<img data-ng-show="user.picture!=null" data-ng-src="{{user.picture}}"
+		class="img-circle" height="30" width="30" />
+	</span>	
+</span>

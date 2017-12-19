@@ -1,0 +1,15 @@
+<div class="sideNav" id="sideNavContent">
+	<a href="#!/home" >Notes</a>
+	<a href="#!/reminders">Reminders</a>
+	<hr>
+	<a href="#!/Labels">Labels</a>
+	<div class="container" data-ng-repeat="label in labels">
+		<a data-ui-sref="labels({labelNames:label.labelName})" data-ng-bind="label.labelName"></a>
+	</div>
+	<div class="container">
+		<a data-ng-click="showModalLabel()">Create Label</a>
+	</div>
+	<hr>
+	<a href="#!/archive" >Archives</a> 
+	<a href="#!/trash" >Trash</a>
+</div>

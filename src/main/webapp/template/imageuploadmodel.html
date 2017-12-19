@@ -1,0 +1,20 @@
+<div class="modal-content">
+	<div class="modal-header">
+		<font size="4px;"><b>Upload your profile photo</b></font>
+	</div>
+	<div class="modal-body" style="padding-left: 200px;">
+		<div class="cropArea">
+			<font class="noimagemessage" data-ng-show="!myImage" size="5px;"><b>No image selected</b></font>
+			<img-crop data-ng-show="myImage" image="myImage" result-image="myCroppedImage"></img-crop>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn" style=" outline: none; float: left;"
+			data-ng-click="triggerImageUploadUI(owner,'waitForCrop')">
+			<font size="2px;"><b>Select a photo from your computer</b></font>
+		</button>
+		<button type="button" class="btn btn-primary" data-ng-click="owner.picture=myCroppedImage;$scope.updateUser(owner);ok();">Set as profile
+			photo</button>
+		<button type="button" class="btn" data-ng-click="closeModal();ok();">Cancel</button>
+	</div>
+</div>

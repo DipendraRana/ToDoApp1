@@ -1,0 +1,65 @@
+<div class="modal-content" data-ng-init="getAllUser(); getTheCollborators(note);">
+	<div class="modal-header">
+		<font size="5px">Collborators</font>
+	</div>
+	<div class="modal-body">
+		<div class="row" data-ng-show="note.user!=null">
+			<div class="col-sm-2">
+				<img data-ng-show="note.user.picture==null" src="images/photo.jpg"
+					class="img-circle" height="50" width="50" />
+				<img data-ng-show="note.user.picture!=null" data-ng-src="{{note.user.picture}}"
+				class="img-circle" height="50" width="50" />
+			</div>
+			<div class="col-sm-8">
+				<font size="3px">{{note.user.userName}}<i class="pull-right">(owner)</i></font>
+			</div>
+			<div class="col-sm-8">
+				<font size="3px">{{note.user.emailId}}</font>
+			</div>
+		</div>
+		<div class="row" data-ng-show="note.user==null">
+			<div class="col-sm-2">
+				<img data-ng-show="owner.picture==null" src="images/photo.jpg"
+					class="img-circle" height="50" width="50" />
+				<img data-ng-show="owner.picture!=null" data-ng-src="{{owner.picture}}"
+					class="img-circle" height="50" width="50" />
+			</div>
+			<div class="col-sm-8">
+				<font size="3px">{{owner.userName}}<i class="pull-right">(owner)</i></font>
+			</div>
+			<div class="col-sm-8">
+				<font size="3px">{{owner.emailId}}</font>
+			</div>
+		</div>
+		<br>
+		<div data-ng-repeat="user in note.collaborators">
+			<div class="row" style="height: 72px;">
+				<div class="col-sm-2">
+					<img data-ng-show="user.picture==null" src="images/photo.jpg"
+						class="img-circle" height="50" width="50" />
+					<img data-ng-show="user.picture!=null" data-ng-src="{{user.picture}}"
+						class="img-circle" height="50" width="50" />
+				</div>
+				<div class="col-sm-8">
+					<font size="3px">{{user.userName}}</font> 
+					<i class="glyphicon glyphicon-remove col-sm-1 pull-right" 
+					data-ng-click="removeUserFromCollaboration($index,note,user)"></i>
+					<br>
+					{{user.emailId}}
+				</div>
+			</div>
+		</div>
+		<br> <br>
+		<div class="row">
+			<input type="email" class="col-sm-12" data-ng-model="emailId"
+				placeholder="Enter Collborator" list="usersId">
+				<datalist id="usersId">
+				 	<option data-ng-repeat="emailId in users" value="{{emailId}}">
+				</datalist>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<div role="button" data-ng-click="addCollaboraotrs(note,emailId);ok();"
+			class="btn btn-done pull-right inline" data-dismiss="modal">DONE</div>
+	</div>
+</div>

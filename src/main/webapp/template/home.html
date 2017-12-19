@@ -1,0 +1,163 @@
+<top-nav-bar></top-nav-bar>
+<second-top-bar></second-top-bar>
+<side-nav-bar></side-nav-bar>
+
+
+<!-------------------------------------------------- New Note -------------------------------------------------------------------->
+<div id="noteContainer" class="container-fluid">
+	<div class="row">
+		<div class="col-lg-3 col-md-3"></div>
+		<div id="note" class=" col-sm-12 col-md-6 col-xs-12 col-lg-4" style="background-color: {{newNote.color}}">
+			<img data-ng-show="newNote.image" class="images" data-ng-src="{{newNote.image}}"></img>
+			<div contenteditable="true" data-text="Title"
+				data-ng-model="newNote.noteTitle" id="note-title"></div>
+			<div contenteditable="true" data-text="Take a note"
+				data-ng-model="newNote.noteDescription" id="note-body"></div>
+					
+			<div class="note-icons" id="note_icons">
+				<div class="dropdown inline">
+					<img src="images/reminder.png" width="19px" height="19px"
+						data-toggle="dropdown">
+					<ul class="dropdown-menu">
+						<li><div style="padding-left: 2px;">Reminder:</div> <br></li>
+						<li><div>
+								<input type="date" data-ng-model="newNote.reminderDate" data-ng-click="newNote.reminderDate=date">
+							</div> 
+							<br>
+						</li>
+						<li><div class="input-group" data-toggle="collapse"
+								data-target="#inputreminder{{newNote}}">
+								Click To Add Time<span class="caret"></span>
+							</div>
+							<div id="inputreminder{{newNote}}" class="collapse">
+								<div data-ng-model="newNote.reminderTime"
+									data-ng-click="newNote.reminderTime='8:00 AM'">Morning
+									8:00 AM</div>
+								<div data-ng-model="newNote.reminderTime"
+									data-ng-click="newNote.reminderTime='1:00 PM'">AfterNoon
+									1:00 PM</div>
+								<div data-ng-model="newNote.reminderTime"
+									data-ng-click="newNote.reminderTime='6:00 PM'">Evening
+									6:00 PM</div>
+								<div data-ng-model="newNote.reminderTime"
+									data-ng-click="newNote.reminderTime='8:00 PM'">Night
+									8:00 PM</div>	
+							</div>
+						</li>
+					</ul>
+				</div>
+
+				<div class="dropdown inline">
+					<img src="images/colors.svg" width="30px" height="19px"
+						data-toggle="dropdown">
+					<ul class="dropdown-menu">
+						<li><span data-ng-repeat="color in colors" role="menuitem"><img
+								data-ng-src="{{color.path}}" title="{{color.tooltip}}"
+								height="25px" data-ng-model="newNote.color" data-ng-click="newNote.color=color.color">
+						</span></li>
+					</ul>
+				</div> 
+				
+				<img data-ng-src="images/archive.png"
+							data-ng-click="">
+				
+				<img data-ng-src="images/image.svg"
+							data-ng-click="triggerImageUploadUI(newNote)"> 
+				<input type="file" id="imageUploadUI" data-ng-show="false" data-ng-model="file"
+					onchange="angular.element(this).scope().imageUpload(this)">
+				
+				<img src="images/collaborator.svg" data-ng-model="newNote.image" data-ng-click="showModalCollaborator(newNote , 'newNote')">
+				
+				<div class="dropdown inline">
+					<img src='images/more.svg' width="19px" height="19px"
+						data-toggle="dropdown">
+					<ul class="dropdown-menu">
+						<li><a data-toggle="collapse"
+							data-target="#input{{newNote}}">Select a label<span
+								class="caret"></span>
+						</a>
+							<div id="input{{newNote}}" class="collapse">
+								<div class="input-group" data-ng-repeat="label in labels">
+									<div class="conatiner">
+										<div class="checkbox" style="padding-left: 25px;">
+											<label><input type="checkbox"
+												data-ng-click="$scope.labelName = label.labelName;newNote.labeled = true;
+												newNote.labels.push(label);">{{label.labelName}}</label>
+										</div>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				
+				<div role="button" data-ng-click="createNote(newNote)"
+					class="btn btn-done pull-right">DONE</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<!-------------------------------------------------- Pined Notes -------------------------------------------------------------------->
+	<div id="note-container"
+		class=" col-sm-12 col-md-12 col-xs-12 col-lg-12">
+		<div class="col-lg-1 col-md-1"></div>
+		<div class="col-md-10 col-sm-12 col-xs-12 col-lg-10">
+			<h4 data-ng-show="pinnedNote.length">Pinned:</h4>
+			<div
+				data-ng-repeat="note in notes | filter : {pinned : true} as pinnedNote"
+				id="note-scope" class="{{changeView}}">
+				<div class="card" style="background-color: {{note.color}}" data-ng-init="getTheCollborators(note)">
+					<div class="card-block" data-ng-click="showModal(note)">
+						<div class="img-wrapper">
+							<pinned></pinned>
+						    <img class="img-responsive images" data-ng-src="{{note.image}}">
+						    <div class="img-overlay">
+						      <button data-ng-if="note.image" class="btn btn-md" data-ng-click="$event.stopPropagation();note.image=null;updateNote(note);">
+						      	<i class="glyphicon glyphicon-trash"></i></button>
+						    </div>
+						</div>
+						<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
+						<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
+					</div>
+					<note-extras></note-extras>
+					<note-icons></note-icons>
+					<url-meta-data></url-meta-data>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-1 col-md-1"></div>
+	</div>
+	
+	
+	<!-------------------------------------------------- Not Pinned Notes ----------------------------------------------------------------->
+	<div id="note-container"
+		class=" col-sm-12 col-md-12 col-xs-12 col-lg-12">
+		<div class="col-lg-1 col-md-1"></div>
+		<div class="col-md-10 col-sm-12 col-xs-12 col-lg-10">
+			<h4 data-ng-show="otherNotes.length && pinnedNote.length">Others:</h4>
+			<div
+				data-ng-repeat="note in notes | filter : {trashed : false , archived : false , pinned : false} as otherNotes"
+				id="note-scope" class="{{changeView}}">
+				<div class="card" style="background-color: {{note.color}}" data-ng-init="getTheCollborators(note)">
+					<div class="card-block" data-ng-click="showModal(note)">
+						<div class="img-wrapper">
+							<not-pinned></not-pinned>
+						    <img class="img-responsive images" data-ng-src="{{note.image}}">
+						    <div class="img-overlay">
+						      <button data-ng-if="note.image" class="btn btn-md" data-ng-click="$event.stopPropagation();note.image=null;updateNote(note);">
+						      	<i class="glyphicon glyphicon-trash"></i></button>
+						    </div>
+						</div>
+						<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
+						<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
+					</div>
+					<note-extras></note-extras>
+					<note-icons></note-icons>
+					<url-meta-data></url-meta-data>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-1 col-md-1"></div>
+	</div>
+</div>

@@ -1,0 +1,57 @@
+<div class="topNav">
+<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: {{navBarColor}}">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button id="sidetogglebutton" type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a id="toggler" class="navbar-brand" onclick="toogleNav()">&#9776;</a>
+      <a class="navbar-brand">{{navBarName}}</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><input id="searchbar" type="text" placeholder="Search.." data-ng-click="chageToSearch()" data-ng-model="noteSearched">
+      		<button id="searchbutton" type="submit" data-ng-click="chageToHome()"><i class="fa fa-close"></i></button></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a id="list" data-ng-click="listView()"><span class="{{icon}}"></span></a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" style="background-color: {{navBarColor}}">
+          	<img data-ng-show="owner.picture==null" src="images/photo.jpg"
+				class="img-circle" height="30px" width="30px"
+				style="margin-right: 30px; overflow: hidden; padding-bottom: 3px;" />
+			<img data-ng-show="owner.picture!=null" data-ng-src="{{owner.picture}}"
+				class="img-circle" height="40px" width="40px"
+				style="margin-right: 30px; overflow: hidden; margin-top: -9px;" /></a>	
+          <ul class="dropdown-menu">
+            <li><div class="panel panel-default">
+				<div class="panel-body" style="margin-right: 38px;"><div class="row">
+					<div class="col-sm-2">
+						<img data-ng-show="owner.picture==null" src="images/photo.jpg"
+							class="img-circle" height="30px" width="30px"
+							style="margin-right: 30px; overflow: hidden;" 
+							data-ng-click="showImageUploader(owner)" />
+						<img data-ng-show="owner.picture!=null" data-ng-src="{{owner.picture}}"
+							class="img-circle" height="40px" width="40px"
+							style="margin-right: 20px; overflow: hidden;" 
+							data-ng-click="showImageUploader(owner)" />
+					</div>
+					<div class="col-sm-8">
+						<font size="3px">{{owner.userName}}</font>
+					</div>
+					<div class="col-sm-8">
+						<font size="3px">{{owner.emailId}}</font>
+					</div>
+				</div></div>
+				<div class="panel-footer"><button data-ng-click="logoutUser()">Logout</button></div>
+				</div>
+			</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+</div>

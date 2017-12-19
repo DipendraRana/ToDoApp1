@@ -1,0 +1,50 @@
+<top-nav-bar></top-nav-bar>
+<second-top-bar></second-top-bar>
+<side-nav-bar></side-nav-bar>
+<div id="noteContainer" class="container-fluid">
+	<div id="note-container"
+		class=" col-sm-12 col-md-12 col-xs-12 col-lg-12">
+
+		<div class="col-lg-1 col-md-1"></div>
+		<div class="col-md-10 col-sm-12 col-xs-12 col-lg-10">
+			<div class="col-md-10 col-sm-12 col-xs-12 col-lg-10 headerTrash">
+				<font size="5px;">Notes in Trash are deleted after 7 days</font>
+				<button class="emptyButton" data-ng-show="trashedNotes.length" data-ng-click="deleteAllNotesFromTrash()">
+					<font size="3px;" style="color: #3385ff;">Empty Trash Now</font><br>
+				</button>
+			</div>
+			<div
+				data-ng-repeat="note in notes | filter : {trashed : true} as trashedNotes"
+				id="note-scope" class="{{changeView}}">
+
+				<div class="card" style="background-color: {{note.color}}" data-ng-init="getTheCollborators(note)">
+					<div class="card-block" data-ng-click="showModal(note)">
+						<div class="img-wrapper">
+						    <img class="img-responsive images" data-ng-src="{{note.image}}">
+						    <div class="img-overlay">
+						      <button data-ng-if="note.image" class="btn btn-md" data-ng-click="$event.stopPropagation();note.image=null;updateNote(note);">
+						      	<i class="glyphicon glyphicon-trash"></i></button>
+						    </div>
+						</div>
+						<div class="card-title" data-ng-bind-html="note.noteTitle"></div>
+						<div class="card-text" data-ng-bind-html="note.noteDescription"></div>
+					</div>
+					<note-extras></note-extras>
+					<div class="note-icons">
+						<div class="dropup">
+							<img src='images/more.svg' width="19px" height="19px"
+								data-toggle="dropdown">
+							<ul class="dropdown-menu">
+								<li><a data-ng-click="deleteNotePermanently(note)">Delete
+										Forever</a></li>
+								<li><a data-ng-click="note.trashed = false;updateNote(note);">Restore</a></li>
+							</ul>
+						</div>
+					</div>
+					<url-meta-data></url-meta-data>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-1 col-md-1"></div>
+</div>

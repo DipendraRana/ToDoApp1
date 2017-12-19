@@ -1,0 +1,17 @@
+<div data-ng-init="getURLMetaData(note)">
+	<div data-ng-repeat="urlData in note.link">
+		<div data-ng-if="urlData.title"  >
+			<a data-ng-href="{{urlData.url}}" target="_blank">
+				<div class="row" style="background-color:#FAF8F8; margin-right:0px;  margin-left:0px; border:1px solid grey">
+					<div class="col-sm-4 col-md-4 col-xs-4" style="padding: 0px">
+					<img data-ng-src="{{urlData.imageUrl}}" height="70" width="80">
+				</div>
+				<div class="col-sm-8 col-md-8 col-xs-8"  >
+					<div data-ng-bind="urlData.title" style="font-size: 14px; color:black;"></div>
+					<div data-ng-bind="urlData.host" style="font-size: 10px; color:grey;"></div>
+				</div>
+				</div>
+			</a>
+		</div>
+	</div>
+</div>
