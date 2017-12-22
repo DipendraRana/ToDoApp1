@@ -37,22 +37,38 @@ ToDo.controller('homeController',
 						if ($location.path() == "/home") {
 							$scope.navBarName = "FunDoNote";
 							$scope.navBarColor = "#ff9900";
+							setPageView($scope.navBarName);
 						} else if ($location.path() == "/trash") {
 							$scope.navBarName = "Trash";
 							$scope.navBarColor = "#555457";
+							setPageView($scope.navBarName);
 						} else if ($location.path() == "/archive") {
 							$scope.navBarName = "Archive";
 							$scope.navBarColor = "#5B9B9D";
+							setPageView($scope.navBarName);
 						} else if ($location.path() == "/reminders") {
 							$scope.navBarName = "Reminders";
 							$scope.navBarColor = "#4E5C4D";
+							setPageView($scope.navBarName);
 						} else if ($location.path() == "/search") {
 							$scope.navBarName = "FunDoNote";
 							$scope.navBarColor = "#0734EF";
+							setPageView($scope.navBarName);
 						} else {
 							$scope.navBarName = $location.path().substr(1);
 							$scope.navBarColor = "#4E5C4D";
+							setPageView($scope.navBarName);
 						}
+					}
+					
+					var setPageView = function(navBarName){
+						ga('set', 'title', navBarName);
+						ga('set', 'page', $location.path());
+						ga('send', 'pageview');
+					}
+					
+					$scope.setEvents = function(eventCategory,eventAction){
+						ga('send','event',eventCategory,eventAction);
 					}
 
 					/*------------------------Constantly Check for reminder time--------------------------------------------------*/
@@ -223,8 +239,10 @@ ToDo.controller('homeController',
 							notes.then(function(response) {
 								if (response.data.message == "Token Expired")
 									$location.path("login");
-								else
+								else {
 									getNotes();
+									ga('send','event','Note Crud','Note Deleted Permanently');
+								}	
 							}, function(response) {
 								getNotes();
 								$scope.error = response.data.message;
@@ -245,8 +263,10 @@ ToDo.controller('homeController',
 								notes.then(function(response) {
 													if (response.data.message == "Token Expired")
 														$location.path("/login");
-													else
+													else {
 														getNotes();
+														ga('send','event','NotesCrud','Create Note');
+													}	
 												},
 												function(response) {
 													$scope.error = response.data.message;
@@ -287,8 +307,10 @@ ToDo.controller('homeController',
 							notes.then(function(response) {
 								if (response.data.message == "Token Expired")
 									$location.path("/login");
-								else
+								else {
 									getTheOwner();
+									ga('send','event','Image','Profile Picture Changed');
+								}	
 							}, function(response) {
 								$scope.error = response.data.message;
 							});
@@ -302,10 +324,12 @@ ToDo.controller('homeController',
 					$scope.listView = function() {
 						$scope.icon = localStorage.getItem('icon');
 						if ($scope.icon == "glyphicon glyphicon-th-list black") {
+							ga('send','event','View','View Changed To List');
 							$scope.icon = "glyphicon glyphicon-th-large black";
 							$scope.changeView = "col-md-12 col-sm-12 col-xs-12 col-lg-12";
 							localStorage.setItem('icon', $scope.icon);
 						} else {
+							ga('send','event','View','View Changed To Grid');
 							$scope.icon = "glyphicon glyphicon-th-list black"
 							$scope.changeView = "col-md-6 col-sm-6 col-xs-12 col-lg-4";
 							localStorage.setItem('icon', $scope.icon);
@@ -339,6 +363,7 @@ ToDo.controller('homeController',
 							  console.log(response);
 							  	if (response && !response.error_message) {
 									toastr.success('Note shared', 'successfully');
+									ga('send','event','Social Sharing','Note Shared To Facebook');
 							  	} else {
 									toastr.success('Note not shared', 'Error');
 								}
@@ -377,6 +402,7 @@ ToDo.controller('homeController',
 									if (response.headers('Error') == "Expired")
 										logout();
 									else {
+										ga('send','event','Collaborators','Colaborator Added');
 										$scope.collaborators = response.data;
 										getNotes();
 									}
@@ -390,6 +416,7 @@ ToDo.controller('homeController',
 					$scope.removeUserFromCollaboration = function($index,note){
 						var token = localStorage.getItem('token');
 						if (token != null && token != "") {
+							ga('send','event','Collaborators','Colaborator Removed');
 							note.collaboratedUser.splice($index,1);
 							$scope.updateNote(note);
 						}else
@@ -407,8 +434,10 @@ ToDo.controller('homeController',
 							notes.then(function(response) {
 								if (response.data.message == "Token Expired")
 									$location.path("login");
-								else
+								else {
 									getNotes();
+									ga('send','event','NoteCrud','All Notes Deleted Together');
+								}	
 							}, function(response) {
 								getNotes();
 								$scope.error = response.data.message;
@@ -426,6 +455,7 @@ ToDo.controller('homeController',
 						note.reminderDate = null;
 						note.reminderTime = null;
 						note.editedDate=new Date();
+						ga('send','event','NotesCrud','Note Moved To Trash');
 						$scope.updateNote(note);
 					}
 	
@@ -438,6 +468,7 @@ ToDo.controller('homeController',
 							note.reminderDate = null;
 							note.reminderTime = null;
 						}
+						ga('send','event','Reminders','Reminder Added To Note');
 						note.reminderTime = time;
 						note.reminder = true;
 						$scope.updateNote(note);
@@ -448,6 +479,7 @@ ToDo.controller('homeController',
 						note.reminderDate = null;
 						note.reminderTime = null;
 						note.reminder = false;
+						ga('send','event','Reminders','Reminder Removed From Note');
 						$scope.updateNote(note);
 					}
 					
@@ -477,6 +509,7 @@ ToDo.controller('homeController',
 					        var imageSrc=e.target.result;
 					        if($scope.typeOfObject=='note'){
 					        	$scope.type.image=imageSrc;
+					        	ga('send','event','Image','Image Uploded To Notes');
 					        	$scope.updateNote($scope.type);
 					        }else if($scope.typeOfObject=='waitForCrop')
 					        	$scope.myImage=imageSrc;
@@ -523,8 +556,10 @@ ToDo.controller('homeController',
 							labels.then(function(response) {
 								if (response.data.message == "Token Expired")
 									$location.path("/login");
-								else
+								else {
 									getLabels();
+									ga('send','event','Label','Label Removed');
+								}	
 							}, function(response) {
 								$scope.error = response.data.message;
 
@@ -544,8 +579,10 @@ ToDo.controller('homeController',
 							labels.then(function(response) {
 								if (response.data.message == "Token Expired")
 									$location.path("/login");
-								else
+								else {
 									getLabels();
+									ga('send','event','Label','Label Updated');
+								}	
 							}, function(response) {
 								$scope.error = response.data.message;
 
@@ -565,8 +602,10 @@ ToDo.controller('homeController',
 								labels.then(function(response) {
 									if (response.data.message == "Token Expired")
 										$location.path("/login");
-									else
+									else {
 										getLabels();
+										ga('send','event','Label','Label Added');
+									}	
 								}, function(response) {
 									$scope.error = response.data.message;
 
@@ -601,6 +640,7 @@ ToDo.controller('homeController',
 					$scope.attachLabelToNote = function(note, label) {
 						note.labeled = true;
 						note.labels.push(label);
+						ga('send','event','Label','Label Added To Note');
 						$scope.updateNote(note);
 					}
 
@@ -610,18 +650,9 @@ ToDo.controller('homeController',
 						note.labels.splice($index, 1);
 						if (note.labels.length == 0)
 							note.labeled = false;
+						ga('send','event','Label','Label Removed From Note');
 						$scope.updateNote(note); 
 					}
-					
-	/*********************************************************************************************************************************/	
-					$scope.getRedirectAddress = function() {
-						$scope.redirect=$location.path();
-					}
-					
-					$scope.getDirectory = function() {
-						
-					}
-					
 					
 	/*********************************************************************************************************************************/	
 					
@@ -640,6 +671,7 @@ ToDo.controller('homeController',
 					}
 
 					$scope.showModal = function(note) {
+						ga('send','event','UiModal','Note Editing Modal Opened');
 						$scope.note = note;
 						modalInstance = $uibModal.open({
 							templateUrl : 'template/editNote.html',
@@ -658,6 +690,7 @@ ToDo.controller('homeController',
 					};
 
 					$scope.showModalLabel = function() {
+						ga('send','event','UiModal','Label Modal Opened');
 						$scope.modalInstance = $uibModal.open({
 							templateUrl : 'template/LabelEdit.html',
 							controller: 'ModalInstanceCtrl',
@@ -675,6 +708,7 @@ ToDo.controller('homeController',
 					};
 					
 					$scope.showModalCollaborator = function(note) {
+						ga('send','event','UiModal','Collaborator Modal Opened');
 						$scope.note = note;
 						var modalInstance = $uibModal.open({
 							templateUrl : 'template/Collaborate.html',
@@ -693,6 +727,7 @@ ToDo.controller('homeController',
 					};
 					
 					$scope.showImageUploader = function(user) {
+						ga('send','event','UiModal','Image Uploader Modal Opened');
 						$scope.user = user;
 						modalInstance = $uibModal.open({
 							templateUrl : 'template/imageuploadmodel.html',
@@ -711,6 +746,7 @@ ToDo.controller('homeController',
 					};
 					
 					$scope.showFullImageViewer = function(note) {
+						ga('send','event','UiModal','Full Image Viewer Modal Opened');
 						$scope.note = note;
 						modalInstance = $uibModal.open({
 							templateUrl : 'template/fullImage.html',

@@ -2,7 +2,11 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-111423921-3', 'auto');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 <link rel="stylesheet"
@@ -69,7 +73,7 @@
 <script type="text/javascript" src="service/fileUploadService.js"></script>
 
 <script type="text/javascript" src="filters/labelFilters.js"></script>
-
+<title>ToDoApp</title>
 </head>
 <body data-ng-app="ToDo">
 	<div data-ui-view style="height: 100%;"></div>

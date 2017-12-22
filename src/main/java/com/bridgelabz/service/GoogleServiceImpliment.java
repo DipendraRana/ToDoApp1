@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -20,9 +21,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 @Transactional
 public class GoogleServiceImpliment implements GoogleService {
-
-	private static final String Google_Clent_ID = "1079577890078-l3ku7cp6o6579dq1ip9cc13i1q6tj52g.apps.googleusercontent.com";
-	private static final String Google_Clent_Secret = "djTz9nyJXCuDXk6yPwQaXuHb";
+	
+	@Value("${google.Google_Clent_ID}")
+	private String Google_Clent_ID;
+	
+	@Value("${google.Google_Clent_Secret}")
+	private String Google_Clent_Secret;
+	
 	private static final String Google_Redirect_URI = "http://localhost:8080/ToDo/connectGoogle";
 	private static final String USER_INFO_URL = "https://www.googleapis.com/oauth2/v1/userinfo";
 

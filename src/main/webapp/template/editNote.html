@@ -8,7 +8,7 @@
 			data-ng-click="note.pinned = true;updateNote(note);" width="22" height="22">
 		    <img data-ng-if="note.image" class="img-responsive images" data-ng-src="{{note.image}}" data-ng-click="showFullImageViewer(note)">
 		    <div class="img-overlay">
-		      <button data-ng-if="note.image" class="btn btn-md" data-ng-click="note.image=null;updateNote(note);">
+		      <button data-ng-if="note.image" class="btn btn-md" data-ng-click="note.image=null;updateNote(note);setEvents('Image','Image Removed From Note');">
 		      	<i class="glyphicon glyphicon-trash"></i></button>
 		    </div>
 		</div>
@@ -18,7 +18,7 @@
 		<div data-ng-init="getURLMetaData(note);">
 			<div data-ng-repeat="urlData in note.link">
 				<div data-ng-if="urlData.title"  >
-					<a data-ng-href="{{urlData.url}}" target="_blank">
+					<a data-ng-href="{{urlData.url}}" target="_blank" data-ng-click="setEvents('Link','Link Is Clicked')">
 						<div class="row" style="background-color:#FAF8F8; margin-right:0px;  margin-left:0px; border:1px solid grey">
 							<div class="col-sm-4 col-md-4 col-xs-4" style="padding: 0px">
 								<img data-ng-src="{{urlData.imageUrl}}" height="70" width="80">
@@ -94,14 +94,14 @@
 				<ul class="dropdown-menu">
 					<li><span data-ng-repeat="color in colors" role="menuitem"><img
 							data-ng-src="{{color.path}}" title="{{color.tooltip}}"
-							height="25px" data-ng-click="note.color = color.color;$scope.color = color;updateNote(note);">
+							height="25px" data-ng-click="note.color = color.color;$scope.color = color;updateNote(note);setEvents('Color','Note Color Is Changed');">
 					</span></li>
 				</ul>
 			</div>
 			<img src="images/archive.png" data-ng-show="note.archived==false"
-				data-ng-click="note.archived = true;note.pinned = false;updateNote(note);"> 
+				data-ng-click="note.archived = true;note.pinned = false;updateNote(note);setEvents('Archieve','Note Is UnArchieved');"> 
 			<img src="images/archive.svg" data-ng-show="note.archived==true"
-				data-ng-click="note.archived = false;note.pinned = false;updateNote(note);">
+				data-ng-click="note.archived = false;note.pinned = false;updateNote(note);setEvents('Archieve','Note Is Archieved');">
 			
 			<img data-ng-src="images/image.svg"
 							data-ng-click="triggerImageUploadUI(note,'note')"> 

@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 import org.jboss.resteasy.client.jaxrs.ResteasyClient;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -21,9 +22,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 @Transactional
 public class FacebookServiceImplement implements FacebookService {
-
-	public static final String FB_APP_ID = "370919266686959";
-	public static final String FB_APP_SECRET = "f874ba5a55963c72f245e93ce4c99e34";
+	
+	@Value("${facebook.FB_APP_ID}")
+	public String FB_APP_ID;
+	
+	@Value("${facebook.FB_APP_SECRET}")
+	public String FB_APP_SECRET;
+	
 	public static final String REDIRECT_URI = "http://localhost:8080/ToDo/connectFB";
 
 	@Override

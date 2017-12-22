@@ -1,5 +1,4 @@
 <top-nav-bar></top-nav-bar>
-<second-top-bar></second-top-bar>
 <side-nav-bar></side-nav-bar>
 
 
@@ -113,7 +112,7 @@
 							<pinned></pinned>
 						    <img class="img-responsive images" data-ng-src="{{note.image}}">
 						    <div class="img-overlay">
-						      <button data-ng-if="note.image" class="btn btn-md" data-ng-click="$event.stopPropagation();note.image=null;updateNote(note);">
+						      <button data-ng-if="note.image" class="btn btn-md" data-ng-click="$event.stopPropagation();note.image=null;updateNote(note);setEvents('Image','Image Removed From Note');">
 						      	<i class="glyphicon glyphicon-trash"></i></button>
 						    </div>
 						</div>
@@ -145,7 +144,7 @@
 							<not-pinned></not-pinned>
 						    <img class="img-responsive images" data-ng-src="{{note.image}}">
 						    <div class="img-overlay">
-						      <button data-ng-if="note.image" class="btn btn-md" data-ng-click="$event.stopPropagation();note.image=null;updateNote(note);">
+						      <button data-ng-if="note.image" class="btn btn-md" data-ng-click="$event.stopPropagation();note.image=null;updateNote(note);setEvents('Image','Image Removed From Note');">
 						      	<i class="glyphicon glyphicon-trash"></i></button>
 						    </div>
 						</div>
