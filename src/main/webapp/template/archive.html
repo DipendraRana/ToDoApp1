@@ -79,7 +79,7 @@
 								data-toggle="dropdown">
 							<ul class="dropdown-menu">
 								<li><a data-ng-click="deleteNote(note)">Delete Note</a></li>
-								<li><a data-ng-click="note.archived = false;note.pinned = false;createNote(note);">Make a
+								<li><a data-ng-click="note.archived = false;note.pinned = false;createNote(note);setEvents('NotesCrud','Copy Of Note Is Made');">Make a
 										copy</a></li>
 								<li><a data-ng-click="facebookShare(note)">Share To
 										Facebook</a></li>

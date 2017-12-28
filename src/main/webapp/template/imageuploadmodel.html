@@ -13,7 +13,7 @@
 			data-ng-click="triggerImageUploadUI(owner,'waitForCrop')">
 			<font size="2px;"><b>Select a photo from your computer</b></font>
 		</button>
-		<button type="button" class="btn btn-primary" data-ng-click="owner.picture=myCroppedImage;$scope.updateUser(owner);ok();">Set as profile
+		<button type="button" class="btn btn-primary" data-ng-click="owner.picture=myCroppedImage;$scope.updateUser(owner);setEvents('Image','Profile Picture Changed');ok();">Set as profile
 			photo</button>
 		<button type="button" class="btn" data-ng-click="closeModal();ok();">Cancel</button>
 	</div>

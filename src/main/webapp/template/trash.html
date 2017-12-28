@@ -8,7 +8,7 @@
 		<div class="col-md-10 col-sm-12 col-xs-12 col-lg-10">
 			<div class="col-md-10 col-sm-12 col-xs-12 col-lg-10 headerTrash">
 				<font size="5px;">Notes in Trash are deleted after 7 days</font>
-				<button class="emptyButton" data-ng-show="trashedNotes.length" data-ng-click="deleteAllNotesFromTrash()">
+				<button class="emptyButton" data-ng-show="trashedNotes.length" data-ng-click="deleteAllNotesFromTrash();setEvents('NoteCrud','All Notes Deleted Together');">
 					<font size="3px;" style="color: #3385ff;">Empty Trash Now</font><br>
 				</button>
 			</div>
@@ -17,7 +17,7 @@
 				id="note-scope" class="{{changeView}}">
 
 				<div class="card" style="background-color: {{note.color}}" data-ng-init="getTheCollborators(note)">
-					<div class="card-block" data-ng-click="showModal(note)">
+					<div class="card-block" data-ng-click="showModal(note);">
 						<div class="img-wrapper">
 						    <img class="img-responsive images" data-ng-src="{{note.image}}">
 						    <div class="img-overlay">
@@ -34,7 +34,7 @@
 							<img src='images/more.svg' width="19px" height="19px"
 								data-toggle="dropdown">
 							<ul class="dropdown-menu">
-								<li><a data-ng-click="deleteNotePermanently(note)">Delete
+								<li><a data-ng-click="deleteNotePermanently(note);setEvents('Note Crud','Note Deleted Permanently');">Delete
 										Forever</a></li>
 								<li><a data-ng-click="note.trashed = false;updateNote(note);setEvents('NoteCrud','Note Restored');">Restore</a></li>
 							</ul>

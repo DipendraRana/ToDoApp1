@@ -239,10 +239,8 @@ ToDo.controller('homeController',
 							notes.then(function(response) {
 								if (response.data.message == "Token Expired")
 									$location.path("login");
-								else {
+								else 
 									getNotes();
-									ga('send','event','Note Crud','Note Deleted Permanently');
-								}	
 							}, function(response) {
 								getNotes();
 								$scope.error = response.data.message;
@@ -263,10 +261,8 @@ ToDo.controller('homeController',
 								notes.then(function(response) {
 													if (response.data.message == "Token Expired")
 														$location.path("/login");
-													else {
+													else 
 														getNotes();
-														ga('send','event','NotesCrud','Create Note');
-													}	
 												},
 												function(response) {
 													$scope.error = response.data.message;
@@ -307,10 +303,8 @@ ToDo.controller('homeController',
 							notes.then(function(response) {
 								if (response.data.message == "Token Expired")
 									$location.path("/login");
-								else {
+								else 
 									getTheOwner();
-									ga('send','event','Image','Profile Picture Changed');
-								}	
 							}, function(response) {
 								$scope.error = response.data.message;
 							});
@@ -436,7 +430,6 @@ ToDo.controller('homeController',
 									$location.path("login");
 								else {
 									getNotes();
-									ga('send','event','NoteCrud','All Notes Deleted Together');
 								}	
 							}, function(response) {
 								getNotes();

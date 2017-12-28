@@ -116,12 +116,12 @@
 				<ul class="dropdown-menu">
 					<li><a data-ng-click="deleteNote(note)" data-dismiss="modal"
 						data-ng-show="note.trashed==false">Delete Note</a></li>
-					<li><a data-ng-click="note.archived = false;note.pinned = false;createNote(note);"
+					<li><a data-ng-click="note.archived = false;note.pinned = false;createNote(note);setEvents('NotesCrud','Copy Of Note Is Made');"
 						data-dismiss="modal" data-ng-show="note.trashed==false">Make a
 							copy</a></li>
 					<li><a data-ng-click="facebookShare(note)" data-ng-show="note.trashed==false">Share To
 										Facebook</a></li>
-					<li><a data-ng-click="deleteNotePermanently(note);ok();"
+					<li><a data-ng-click="deleteNotePermanently(note);setEvents('Note Crud','Note Deleted Permanently');ok();"
 						data-ng-show="note.trashed==true" data-dismiss="modal">Delete
 							Forever</a></li>
 					<li><a data-ng-click="note.trashed = false;updateNote(note);"
