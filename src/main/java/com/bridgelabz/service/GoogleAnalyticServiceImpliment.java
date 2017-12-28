@@ -76,12 +76,12 @@ public class GoogleAnalyticServiceImpliment implements GoogleAnalyticService {
 		dateRange.setEndDate(endDate);
 
 		List<Metric> allMetrics = new ArrayList<Metric>();
-		for (int i = 0; i < metric.length; i++)
-			allMetrics.add(new Metric().setExpression(metric[i]));
+		for (int metricCount = 0; metricCount < metric.length; metricCount++)
+			allMetrics.add(new Metric().setExpression(metric[metricCount]));
 
 		List<Dimension> allDimensions = new ArrayList<Dimension>();
-		for (int i = 0; i < dimension.length; i++)
-			allDimensions.add(new Dimension().setName(dimension[i]));
+		for (int dimentionCount = 0; dimentionCount < dimension.length; dimentionCount++)
+			allDimensions.add(new Dimension().setName(dimension[dimentionCount]));
 
 		ReportRequest request = new ReportRequest().setViewId(VIEW_ID).setDateRanges(Arrays.asList(dateRange))
 				.setMetrics(allMetrics).setDimensions(allDimensions);
@@ -154,16 +154,16 @@ public class GoogleAnalyticServiceImpliment implements GoogleAnalyticService {
 				List<DateRangeValues> metrics = row.getMetrics();
 				JsonObject object = new JsonObject();
 				if (dimensionHeaders != null) {
-					for (int i = 0; i < dimensionHeaders.size() && i < dimensions.size(); i++) {
-						object.addProperty(dimensionHeaders.get(i), dimensions.get(i));
+					for (int dimesionCount = 0; dimesionCount < dimensionHeaders.size() && dimesionCount < dimensions.size(); dimesionCount++) {
+						object.addProperty(dimensionHeaders.get(dimesionCount), dimensions.get(dimesionCount));
 					}
 				}
 
 				if (metricHeaders != null) {
-					for (int j = 0; j < metrics.size(); j++) {
-						DateRangeValues values = metrics.get(j);
-						for (int k = 0; k < values.getValues().size() && k < metricHeaders.size(); k++) {
-							object.addProperty(metricHeaders.get(k).getName(), values.getValues().get(k));
+					for (int metricCount = 0; metricCount < metrics.size(); metricCount++) {
+						DateRangeValues values = metrics.get(metricCount);
+						for (int metricValueCount = 0; metricValueCount < values.getValues().size() && metricValueCount < metricHeaders.size(); metricValueCount++) {
+							object.addProperty(metricHeaders.get(metricValueCount).getName(), values.getValues().get(metricValueCount));
 						}
 					}
 				}
@@ -181,24 +181,24 @@ public class GoogleAnalyticServiceImpliment implements GoogleAnalyticService {
 		Pages pages=null;
 		Events events=null;
 		if(sessionArray!=null) {
-			for(int i=0;i<sessionArray.size();i++) {
+			for(int sessionCount=0;sessionCount<sessionArray.size();sessionCount++) {
 				analyticResponse=new GoogleAnalyticResponse();
-				JsonObject sessionObject=(JsonObject) sessionArray.get(i);
+				JsonObject sessionObject=(JsonObject) sessionArray.get(sessionCount);
 				analyticResponse.setsessionDuration(sessionObject.get("ga:sessionDuration").getAsString());
 				analyticResponse.setPagesPerSession(sessionObject.get("ga:pageviewsPerSession").getAsString());
 				List<Pages> listOfPages=new ArrayList<Pages>();
 				if(pageArray!=null) {
-					for(int j=0;j<pageArray.size();j++) {
-						JsonObject pageObject=(JsonObject) pageArray.get(j);
+					for(int pageCount=0;pageCount<pageArray.size();pageCount++) {
+						JsonObject pageObject=(JsonObject) pageArray.get(pageCount);
 						pages=new Pages();
 						pages.setPageTitle(pageObject.get("ga:pageTitle").getAsString());
 						pages.setAvgTimeOnPage(pageObject.get("ga:timeOnPage").getAsString());
 						pages.setPageViews(pageObject.get("ga:pageviews").getAsString());
 						List<Events> listOfEvents=new ArrayList<Events>();
 						if(eventArray!=null) {
-							for(int k=0;k<eventArray.size();k++) {
+							for(int eventCount=0;eventCount<eventArray.size();eventCount++) {
 								events=new Events();
-								JsonObject eventObject=(JsonObject) eventArray.get(k);
+								JsonObject eventObject=(JsonObject) eventArray.get(eventCount);
 								if(eventObject.get("ga:pageTitle").getAsString().equals(pages.getPageTitle())) {
 									events.setEventCategory(eventObject.get("ga:eventCategory").getAsString());
 									events.setEventAction(eventObject.get("ga:eventAction").getAsString());
